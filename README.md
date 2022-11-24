@@ -28,8 +28,6 @@ Es sind zwei Klassen implementiert:
 * `ExampleProcedureAnalyser` zeigt eine Implementierung von `IProcedureAnalyzer`, welche nach jedem Speichern eines Formulars ausgeführt wird.
 * `ExampleMethods` zeigt eine Implementierung von `IProcedureAnalyzer`, mit einer Funktion zum Aufruf aus einem Script.
 
-Die abstrakte Klasse `AbstractBackendService` implementiert Methoden aus `IProcedureAnalyzer` für den Plugintyp `OnkostarPluginType.BACKEND_SERVICE`.
-
 ## Abweichungen zum Beispielplugin
 
 Dieses Testplugin weicht vom Beispiel im [Kundenbereich ONKOSTAR Erweiterungen](https://confluence.it-choice.de/display/KBOSTARAPI/Entwicklungsumgebung) ab.
