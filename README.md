@@ -26,7 +26,7 @@ Das Projekt verwendet Maven-Wrapper (hier: `./mvnw`, für Windows gilt `mvnw.cmd
 Es sind zwei Klassen implementiert:
 
 * `ExampleProcedureAnalyser` zeigt eine Implementierung von `IProcedureAnalyzer`, welche nach jedem Speichern eines Formulars ausgeführt wird.
-* `ExampleMethods` zeigt eine Implementierung, basierend auf `AbstractBackendService`, mit einer Funktion zum Aufruf aus einem Script.
+* `ExampleMethods` zeigt eine Implementierung von `IProcedureAnalyzer`, mit einer Funktion zum Aufruf aus einem Script.
 
 Die abstrakte Klasse `AbstractBackendService` implementiert Methoden aus `IProcedureAnalyzer` für den Plugintyp `OnkostarPluginType.BACKEND_SERVICE`.
 
