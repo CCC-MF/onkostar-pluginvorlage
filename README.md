@@ -4,13 +4,13 @@ Implementierung eines einfachen Plugins für Onkostar und Spielwiese.
 
 ## Voraussetzungen
 
-Installation des JDK 11 oder neuer. Die Datei `onkostar-api-2.11.1.3.jar` (oder neuer) muss verfügbar sein, da sie hier nicht enthalten ist.
+Installation des JDK 11 oder neuer. Die Datei `onkostar-api-2.8.1.jar` (oder neuer) muss verfügbar sein, da sie hier nicht enthalten ist.
 
 ## Build
 
-Kopieren der Datei `onkostar-api-2.11.1.3.jar` (oder neuer) in das Verzeichnis `libs`.
+Kopieren der Datei `onkostar-api-2.8.1.jar` (oder neuer) in das Verzeichnis `libs`.
 
-**_Hinweis_**: Die Maven-Konfiguration referenziert entsprechend dem Beispielplugin die Onkostar-API mit `${project.basedir}/libs/onkostar-api-2.11.1.3.jar`.
+**_Hinweis_**: Die Maven-Konfiguration referenziert entsprechend dem Beispielplugin die Onkostar-API mit `${project.basedir}/libs/onkostar-api-2.8.1.jar`.
 Dies führt bei Ausführung des folgenden Befehls zu einer Warnung, ist aber mit der aktuellen Maven-Version 3.5 durchführbar.
 
 Danach Ausführen des Befehls:
@@ -35,6 +35,6 @@ Dieses Testplugin weicht vom Beispiel im [Kundenbereich ONKOSTAR Erweiterungen](
 Angepasst wurden:
 
 * Nutzung von Maven-Wrapper - Keine lokale Installation von Maven erforderlich.
-* Projekt nutzt ausschließlich Maven und keine IDE-spezifischen Konfigurationen - Kein spezieller Eclipse-Workspace erforderlich, Nutzung anderer IDE möglich.
+* Projekt nutzt ausschließlich Maven und keine IDE-spezifischen Konfigurationen - kein spezieller Eclipse-Workspace erforderlich, Nutzung anderer IDE möglich.
 * Anpassung und entfernen von ungenutzten Schemata in der Spring-Konfiguration `moduleContext.xml`.
 * Nutzung der aktuellsten Version der Onkostar-API.
