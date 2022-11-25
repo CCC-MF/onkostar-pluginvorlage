@@ -8,8 +8,7 @@ import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class ExampleMethods implements IProcedureAnalyzer {
 
@@ -68,24 +67,18 @@ public class ExampleMethods implements IProcedureAnalyzer {
      * <pre>
      *      executePluginMethod(
      *          'ExampleMethods',
-     *          'getPatientIcd10Codes',
-     *          'Dummy1234',
+     *          'getHelloMessage',
+     *          { name: 'World' },
      *          function (result) {console.log(result);},
      *          false
      *      );
      * </pre>
      *
-     * @param patientId The ID of the patient
-     * @return List with ICD-10 codes
+     * @param data The data Map
+     * @return The hello message
      */
-    public List<String> getPatientIcd10Codes(String patientId) {
-        var result = new ArrayList<String>();
-        var patient = onkostarApi.getPatient(patientId);
-        if (null == patient) {
-            return new ArrayList<>();
-        }
-        patient.getDiseases().forEach(disease -> result.add(disease.getIcd10Code()));
-        return result;
+    public String getHelloMessage(Map<String, Object> data) {
+        var name = data.get("name");
+        return String.format("Hello %s", name);
     }
-
 }
