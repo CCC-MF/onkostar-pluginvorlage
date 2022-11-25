@@ -34,7 +34,7 @@ Dieses Testplugin weicht vom Beispiel im [Kundenbereich ONKOSTAR Erweiterungen](
 
 Angepasst wurden:
 
-* Nutzung von Maven-Wrapper - Keine lokale Installation von Maven erforderlich.
+* Nutzung von Maven-Wrapper: Keine lokale Installation von Maven erforderlich.
+* Nutzung von SLF4J: Keine Ausgaben mit System.out.println() in den Beispielen.
 * Projekt nutzt ausschließlich Maven und keine IDE-spezifischen Konfigurationen - kein spezieller Eclipse-Workspace erforderlich, Nutzung anderer IDE möglich.
-* Anpassung und entfernen von ungenutzten Schemata in der Spring-Konfiguration `moduleContext.xml`.
-* Nutzung der aktuellsten Version der Onkostar-API.
+* Spring-Konfiguration `moduleContext.xml`: Zur verwendeten Version des Spring-Frameworks passende Schemata und Entfernen von ungenutzten Schemata.

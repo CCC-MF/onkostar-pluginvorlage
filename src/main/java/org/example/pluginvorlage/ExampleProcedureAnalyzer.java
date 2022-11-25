@@ -7,6 +7,8 @@ import de.itc.onkostar.api.analysis.AnalyseTriggerEvent;
 import de.itc.onkostar.api.analysis.AnalyzerRequirement;
 import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
@@ -14,6 +16,12 @@ import java.util.List;
 import java.util.Set;
 
 public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
+
+    /**
+     * Logger for this class.
+     * Provides better log output than 'System.out.println()'
+     */
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IOnkostarApi onkostarApi;
@@ -45,15 +53,19 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
 
     @Override
     public boolean isRelevantForAnalyzer(Procedure procedure, Disease disease) {
-        return false;
+        return true;
     }
 
     @Override
     public void analyze(Procedure procedure, Disease disease) {
+        logger.info("Run 'ExampleProcedureAnalyzer.analyze()'");
+
         var patient = procedure.getPatient();
 
-        patient.getDiseases().forEach(d -> {
-            var icd10code = d.getIcd10Code();
+        patient.getDiseases().forEach(patientDisease -> {
+            var icd10code = patientDisease.getIcd10Code();
+            // Example log! Do not use in production - personal information!
+            logger.info("Found Disease {} for Patient {}", icd10code, patient.getId());
 
             // Do something with this data ...
         });

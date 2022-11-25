@@ -6,11 +6,19 @@ import de.itc.onkostar.api.Procedure;
 import de.itc.onkostar.api.analysis.AnalyzerRequirement;
 import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
 public class ExampleMethods implements IProcedureAnalyzer {
+
+    /**
+     * Logger for this class.
+     * Provides better log output than 'System.out.println()'
+     */
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private IOnkostarApi onkostarApi;
@@ -79,6 +87,7 @@ public class ExampleMethods implements IProcedureAnalyzer {
      */
     public String getHelloMessage(Map<String, Object> data) {
         var name = data.get("name");
+        logger.info("Called 'getHelloMessage' with name '{}'", name);
         return String.format("Hello %s", name);
     }
 }
