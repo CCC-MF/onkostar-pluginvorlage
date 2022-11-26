@@ -11,15 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
 
     /**
      * Logger for this class.
-     * Provides better log output than 'System.out.println()'
+     * Provides better log output than {@code System.out.println()}'
      */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -46,16 +44,49 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
         return "A simple Example Procedure Analyzer";
     }
 
+    /**
+     * This method implements a check if {@link #analyze(Procedure, Disease)} should be run for
+     * a deleted {@link Procedure}
+     *
+     * This method is deprecated in {@link IProcedureAnalyzer} and should be removed later.
+     *
+     * @return In this example always false
+     */
     @Override
     public boolean isRelevantForDeletedProcedure() {
         return false;
     }
 
+    /**
+     * This method implements a check if procedure or disease is relevant for running {@link #analyze(Procedure, Disease)}.
+     * In this example {@link Procedure} must be a non {@code null} object.
+     *
+     * @param procedure The procedure the plugin might analyze. Can be {@code null}.
+     * @param disease The disease thie plugin might analyze. Can be {@code null}.
+     * @return True if plugin handles a procedure.
+     */
     @Override
     public boolean isRelevantForAnalyzer(Procedure procedure, Disease disease) {
-        return true;
+        return null != procedure;
     }
 
+    /**
+     * This method gets executed each time requirements are met.
+     * <ul>
+     *     <li>
+     *         {@link #isRelevantForDeletedProcedure()} must return 'true'.
+     *         In this example no deleted procedures are processed.
+     *     </li>
+     *     <li>
+     *         {@link #isRelevantForAnalyzer(Procedure, Disease)} must return 'true'.
+     *         In this example only procedures are processed. No diseases are processed.
+     *     </li>
+     *     <li>
+     *         {@link #getTriggerEvents()} must contain matching {@link AnalyseTriggerEvent}.
+     *         In this example the trigger event must match {@code EDIT_SAVE} which will process save events after editing data.
+     *     </li>
+     * </ul>
+     */
     @Override
     public void analyze(Procedure procedure, Disease disease) {
         logger.info("Run 'ExampleProcedureAnalyzer.analyze()'");
@@ -81,12 +112,17 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
         return AnalyzerRequirement.ENTRY;
     }
 
+    /**
+     * Returns set of trigger events.
+     * This example will limit execution of {@link #analyze(Procedure, Disease)} to save event after editing data.
+     * If not overridden, this method defaults to all {@link AnalyseTriggerEvent}s.
+     *
+     * @return Set of trigger events
+     */
     @Override
     public Set<AnalyseTriggerEvent> getTriggerEvents() {
-        return new HashSet<>(
-                List.of(
-                        AnalyseTriggerEvent.EDIT_SAVE
-                )
+        return Set.of(
+                AnalyseTriggerEvent.EDIT_SAVE
         );
     }
 }

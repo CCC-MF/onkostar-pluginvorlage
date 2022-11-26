@@ -3,6 +3,7 @@ package org.example.pluginvorlage;
 import de.itc.onkostar.api.Disease;
 import de.itc.onkostar.api.IOnkostarApi;
 import de.itc.onkostar.api.Procedure;
+import de.itc.onkostar.api.analysis.AnalyseTriggerEvent;
 import de.itc.onkostar.api.analysis.AnalyzerRequirement;
 import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
@@ -16,7 +17,7 @@ public class ExampleMethods implements IProcedureAnalyzer {
 
     /**
      * Logger for this class.
-     * Provides better log output than 'System.out.println()'
+     * Provides better log output than {@code System.out.println()}'
      */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -53,23 +54,58 @@ public class ExampleMethods implements IProcedureAnalyzer {
         return AnalyzerRequirement.ENTRY;
     }
 
+    /**
+     * This method implements a check if {@link #analyze(Procedure, Disease)} should be run for
+     * a deleted {@link Procedure}
+     *
+     * This method is deprecated in {@link IProcedureAnalyzer} and should be removed later.
+     *
+     * @return In this example always false
+     */
     @Override
     public boolean isRelevantForDeletedProcedure() {
         return false;
     }
 
+
+    /**
+     * This method implements a check if procedure or disease is relevant for running {@link #analyze(Procedure, Disease)}.
+     * In this example {@link Procedure} always false - {@link #analyze(Procedure, Disease)} will never be run.
+     *
+     * @param procedure The procedure the plugin might analyze. Can be {@code null}.
+     * @param disease The disease thie plugin might analyze. Can be {@code null}.
+     * @return True if plugin handles a procedure.
+     */
     @Override
     public boolean isRelevantForAnalyzer(Procedure procedure, Disease disease) {
         return false;
     }
 
+    /**
+     * This method gets executed each time requirements are met.
+     * <ul>
+     *     <li>
+     *         {@link #isRelevantForDeletedProcedure()} must return 'true'.
+     *     </li>
+     *     <li>
+     *         {@link #isRelevantForAnalyzer(Procedure, Disease)} must return 'true'.
+     *     </li>
+     *     <li>
+     *         {@link #getTriggerEvents()} must contain matching {@link AnalyseTriggerEvent}.
+     *         This method - if not implemented - defaults to all {@link AnalyseTriggerEvent}s.
+     *     </li>
+     * </ul>
+     *
+     * In this example, this method will never be called since this class should only provide a method to be called
+     * from frontend.
+     */
     @Override
     public void analyze(Procedure procedure, Disease disease) {
-        // Nothing to do
+        // Nothing to do - should never be called
     }
 
     /**
-     * Get list with all ICD-10 codes for patient with given ID.
+     * Return Hello Message for given name and log method call.
      * Usage in script:
      *
      * <pre>
