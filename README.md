@@ -38,3 +38,11 @@ Angepasst wurden:
 * Nutzung von SLF4J: Keine Ausgaben mit System.out.println() in den Beispielen.
 * Projekt nutzt ausschließlich Maven und keine IDE-spezifischen Konfigurationen - kein spezieller Eclipse-Workspace erforderlich, Nutzung anderer IDE möglich.
 * Spring-Konfiguration `moduleContext.xml`: Zur verwendeten Version des Spring-Frameworks passende Schemata und Entfernen von ungenutzten Schemata.
+
+## Beispiel mit UnitTests 
+
+Nicht immer ist es einfach, das Verhalten von Plugins sicher zu stellen. Hierbei können UnitTests helfen.
+Hierbei werden einzelne Einheiten (Klassen und Methoden) eines Plugins getrennt von anderen Teilen der Software (hier: Onkostar) getestet. 
+
+Ein einfaches Beispiel zur Verwendung von UnitTests mit JUnit5 und Mockito befindet sich in Branch [unittest_examples](https://github.com/CCC-MF/onkostar-pluginvorlage/tree/unittest_examples).
+Dieses Beispiel zeigt, wie das verhalten der Onkostar-API für einen Test vorgegeben werden kann und nur die Beispiel-Methode getestet wird. 
