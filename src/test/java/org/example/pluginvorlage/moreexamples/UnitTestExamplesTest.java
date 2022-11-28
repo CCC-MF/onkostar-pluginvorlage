@@ -40,7 +40,7 @@ class UnitTestExamplesTest {
                 return patient;
             } else {
                 // ... andere Patienten nicht.
-                throw new UnitTestExamples.NoSuchPatientException("Kein Patient mit ID " + patientId);
+                return null;
             }
         }).when(this.onkostarApi).getPatient(anyInt());
 
@@ -73,7 +73,6 @@ class UnitTestExamplesTest {
     void testShouldThrowExceptionForUnknownPatient() {
         // Erwarte eine Exception bei Aufruf ...
         var thrownException = assertThrows(Exception.class, () -> {
-            // ... der Methode methodUndertest
             this.unitTestExamples.methodUnderTest(Map.of("patientId", 4711));
         });
 
@@ -82,6 +81,5 @@ class UnitTestExamplesTest {
                 .isInstanceOf(UnitTestExamples.NoSuchPatientException.class)
                 .hasMessage("Kein Patient mit ID 4711");
     }
-
 
 }

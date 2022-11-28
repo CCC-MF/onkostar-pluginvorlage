@@ -6,4 +6,7 @@
 
     <bean id="exampleProcedureAnalyzer" class="org.example.pluginvorlage.ExampleProcedureAnalyzer" />
     <bean id="exampleMethods" class="org.example.pluginvorlage.ExampleMethods" />
+    <bean id="unitTestExamples" class="org.example.pluginvorlage.moreexamples.UnitTestExamples" >
+        <constructor-arg ref="onkostarApi" />
+    </bean>
 </beans>
