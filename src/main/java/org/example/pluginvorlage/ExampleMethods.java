@@ -57,7 +57,7 @@ public class ExampleMethods implements IProcedureAnalyzer {
     /**
      * This method implements a check if {@link #analyze(Procedure, Disease)} should be run for
      * a deleted {@link Procedure}
-     *
+     * <p>
      * This method is deprecated in {@link IProcedureAnalyzer} and should be removed later.
      *
      * @return In this example always false
@@ -73,7 +73,7 @@ public class ExampleMethods implements IProcedureAnalyzer {
      * In this example {@link Procedure} always false - {@link #analyze(Procedure, Disease)} will never be run.
      *
      * @param procedure The procedure the plugin might analyze. Can be {@code null}.
-     * @param disease The disease thie plugin might analyze. Can be {@code null}.
+     * @param disease   The disease thie plugin might analyze. Can be {@code null}.
      * @return True if plugin handles a procedure.
      */
     @Override
@@ -95,7 +95,7 @@ public class ExampleMethods implements IProcedureAnalyzer {
      *         This method - if not implemented - defaults to all {@link AnalyseTriggerEvent}s.
      *     </li>
      * </ul>
-     *
+     * <p>
      * In this example, this method will never be called since this class should only provide a method to be called
      * from frontend.
      */

@@ -1,4 +1,4 @@
-package org.example.pluginvorlage;
+package org.example.pluginvorlage.moreexamples;
 
 import de.itc.onkostar.api.Disease;
 import de.itc.onkostar.api.IOnkostarApi;
@@ -9,11 +9,12 @@ import de.itc.onkostar.api.analysis.IProcedureAnalyzer;
 import de.itc.onkostar.api.analysis.OnkostarPluginType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
+public class UnitTestExamples implements IProcedureAnalyzer {
 
     /**
      * Logger for this class.
@@ -21,12 +22,15 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
      */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private IOnkostarApi onkostarApi;
+    private final IOnkostarApi onkostarApi;
+
+    public UnitTestExamples(IOnkostarApi onkostarApi) {
+        this.onkostarApi = onkostarApi;
+    }
 
     @Override
     public OnkostarPluginType getType() {
-        return OnkostarPluginType.ANALYZER;
+        return OnkostarPluginType.BACKEND_SERVICE;
     }
 
     @Override
@@ -36,12 +40,22 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
 
     @Override
     public String getName() {
-        return "Example Procedure Analyzer";
+        return "Example Methods";
     }
 
     @Override
     public String getDescription() {
-        return "A simple Example Procedure Analyzer";
+        return "Simple Example Methods";
+    }
+
+    @Override
+    public boolean isSynchronous() {
+        return false;
+    }
+
+    @Override
+    public AnalyzerRequirement getRequirement() {
+        return AnalyzerRequirement.ENTRY;
     }
 
     /**
@@ -57,9 +71,10 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
         return false;
     }
 
+
     /**
      * This method implements a check if procedure or disease is relevant for running {@link #analyze(Procedure, Disease)}.
-     * In this example {@link Procedure} must be a non {@code null} object.
+     * In this example {@link Procedure} always false - {@link #analyze(Procedure, Disease)} will never be run.
      *
      * @param procedure The procedure the plugin might analyze. Can be {@code null}.
      * @param disease   The disease thie plugin might analyze. Can be {@code null}.
@@ -67,7 +82,7 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
      */
     @Override
     public boolean isRelevantForAnalyzer(Procedure procedure, Disease disease) {
-        return null != procedure;
+        return false;
     }
 
     /**
@@ -75,54 +90,45 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
      * <ul>
      *     <li>
      *         {@link #isRelevantForDeletedProcedure()} must return 'true'.
-     *         In this example no deleted procedures are processed.
      *     </li>
      *     <li>
      *         {@link #isRelevantForAnalyzer(Procedure, Disease)} must return 'true'.
-     *         In this example only procedures are processed. No diseases are processed.
      *     </li>
      *     <li>
      *         {@link #getTriggerEvents()} must contain matching {@link AnalyseTriggerEvent}.
-     *         In this example the trigger event must match {@code EDIT_SAVE} which will process save events after editing data.
+     *         This method - if not implemented - defaults to all {@link AnalyseTriggerEvent}s.
      *     </li>
      * </ul>
+     * <p>
+     * In this example, this method will never be called since this class should only provide a method to be called
+     * from frontend.
      */
     @Override
     public void analyze(Procedure procedure, Disease disease) {
-        logger.info("Run 'ExampleProcedureAnalyzer.analyze()'");
-
-        var patient = procedure.getPatient();
-
-        patient.getDiseases().forEach(patientDisease -> {
-            var icd10code = patientDisease.getIcd10Code();
-            // Example log! Do not use in production - personal information!
-            logger.info("Found Disease {} for Patient {}", icd10code, patient.getId());
-
-            // Do something with this data ...
-        });
+        // Nothing to do - should never be called
     }
 
-    @Override
-    public boolean isSynchronous() {
-        return false;
+    public List<String> methodUnderTest(Map<String, Object> input) throws IllegalArgumentException, NoSuchPatientException {
+        var patientId = Integer.parseInt(input.get("patientId").toString());
+        if (patientId == 0) {
+            throw new IllegalArgumentException("Keine gültige Patienten ID!");
+        }
+
+        var existingPatient = onkostarApi.getPatient(patientId);
+        if (null == existingPatient) {
+            throw new NoSuchPatientException("Kein Patient mit ID " + patientId);
+        }
+
+        return existingPatient
+                .getDiseases()
+                .stream().map(Disease::getIcd10Code)
+                .collect(Collectors.toList());
     }
 
-    @Override
-    public AnalyzerRequirement getRequirement() {
-        return AnalyzerRequirement.ENTRY;
+    public static class NoSuchPatientException extends RuntimeException {
+        public NoSuchPatientException(String message) {
+            super(message);
+        }
     }
 
-    /**
-     * Returns set of trigger events.
-     * This example will limit execution of {@link #analyze(Procedure, Disease)} to save event after editing data.
-     * If not overridden, this method defaults to all {@link AnalyseTriggerEvent}s.
-     *
-     * @return Set of trigger events
-     */
-    @Override
-    public Set<AnalyseTriggerEvent> getTriggerEvents() {
-        return Set.of(
-                AnalyseTriggerEvent.EDIT_SAVE
-        );
-    }
 }
