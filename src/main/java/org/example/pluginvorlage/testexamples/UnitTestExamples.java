@@ -1,4 +1,4 @@
-package org.example.pluginvorlage.moreexamples;
+package org.example.pluginvorlage.testexamples;
 
 import de.itc.onkostar.api.Disease;
 import de.itc.onkostar.api.IOnkostarApi;

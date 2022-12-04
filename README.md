@@ -41,8 +41,10 @@ Angepasst wurden:
 
 ## Beispiel mit UnitTests 
 
-Nicht immer ist es einfach, das Verhalten von Plugins sicher zu stellen. Hierbei können UnitTests helfen.
+Nicht immer ist es einfach, das Verhalten von Plugins sicherzustellen. Hierbei können UnitTests helfen.
 Hierbei werden einzelne Einheiten (Klassen und Methoden) eines Plugins getrennt von anderen Teilen der Software (hier: Onkostar) getestet. 
 
-Ein einfaches Beispiel zur Verwendung von UnitTests mit JUnit5 und Mockito befindet sich in Branch [unittest_examples](https://github.com/CCC-MF/onkostar-pluginvorlage/tree/unittest_examples).
-Dieses Beispiel zeigt, wie das verhalten der Onkostar-API für einen Test vorgegeben werden kann und nur die Beispiel-Methode getestet wird. 
+Ein einfaches Beispiel zur Verwendung von UnitTests mit JUnit5 und Mockito befindet sich in [`src/main/java/testexamples/UnitTestExamples.java`](src/main/java/testexamples/UnitTestExamples.java) 
+mit entsprechenden Tests in [`src/test/java/testexamples/UnitTestExamplesTest.java`](src/test/java/testexamples/UnitTestExamplesTest.java).
+
+Dieses Beispiel zeigt auch, wie das Verhalten der Onkostar-API für einen Test vorgegeben werden kann und nur die Beispiel-Methode getestet wird. 
