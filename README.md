@@ -39,6 +39,24 @@ Angepasst wurden:
 * Projekt nutzt ausschließlich Maven und keine IDE-spezifischen Konfigurationen - kein spezieller Eclipse-Workspace erforderlich, Nutzung anderer IDE möglich.
 * Spring-Konfiguration `moduleContext.xml`: Zur verwendeten Version des Spring-Frameworks passende Schemata und Entfernen von ungenutzten Schemata.
 
+## Beispiel mit Spring ComponentScan
+
+Onkostar verwendet das Spring Framework. Es ist dadurch möglich, einen ComponentScan auszuführen.
+Damit entfällt die Angabe jedes zu erstellenden Beans mit Klasse und ID in der Datei `moduleContext.xml`, 
+erfordert aber die Angabe, welches Java-Paket nach Componenten durchsucht werden soll.
+
+```xml
+<context:component-scan base-package="org.example.pluginvorlage.componentscan" />
+```
+
+Es werden nun alle Klasse, die mit der Java-Annotation `@Component` ausgezeichnet sind (oder davon abgeleiteten Annotationen wie `@Service` etc.) 
+als zu initialisierendes Bean erkannt und entsprechende Beans auch ohne explizite Angabe in der XML-Datei erstellt.
+
+Als ID des Beans wird dabei der Name der Klasse mit kleinem ersten Buchstaben verwendet.
+
+Eine Angabe von zu referenzierenden Beans um diese über den Konstruktor (Vergleiche Beispiel mit UnitTest) einzufügen ist
+dabei nicht erforderlich, da diese automatisch ermittelt und eingefügt werden.
+
 ## Beispiel mit UnitTests 
 
 Nicht immer ist es einfach, das Verhalten von Plugins sicherzustellen. Hierbei können UnitTests helfen.
