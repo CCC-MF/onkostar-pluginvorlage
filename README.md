@@ -4,7 +4,7 @@ Implementierung eines einfachen Plugins für Onkostar und Spielwiese.
 
 ## Voraussetzungen
 
-Installation des JDK 11 oder neuer. Die Datei `onkostar-api-2.8.1.jar` (oder neuer) muss verfügbar sein, da sie hier nicht enthalten ist.
+Installation des JDK 11 oder neuer. Die Datei `onkostar-api-2.11.1.1.jar` (oder neuer) muss verfügbar sein, da sie hier nicht enthalten ist.
 
 ## Build
 
