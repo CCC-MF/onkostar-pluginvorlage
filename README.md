@@ -8,9 +8,9 @@ Installation des JDK 11 oder neuer. Die Datei `onkostar-api-2.8.1.jar` (oder neu
 
 ## Build
 
-Kopieren der Datei `onkostar-api-2.8.1.jar` (oder neuer) in das Verzeichnis `libs`.
+Kopieren der Datei `onkostar-api-2.11.1.1.jar` (oder neuer) in das Verzeichnis `libs`.
 
-**_Hinweis_**: Die Maven-Konfiguration referenziert entsprechend dem Beispielplugin die Onkostar-API mit `${project.basedir}/libs/onkostar-api-2.8.1.jar`.
+**_Hinweis_**: Die Maven-Konfiguration referenziert entsprechend dem Beispielplugin die Onkostar-API mit `${project.basedir}/libs/onkostar-api-2.11.1.1.jar`.
 Dies führt bei Ausführung des folgenden Befehls zu einer Warnung, ist aber mit der aktuellen Maven-Version 3.5 durchführbar.
 
 Danach Ausführen des Befehls:

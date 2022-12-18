@@ -51,7 +51,7 @@ public class ExampleMethods implements IProcedureAnalyzer {
 
     @Override
     public AnalyzerRequirement getRequirement() {
-        return AnalyzerRequirement.ENTRY;
+        return AnalyzerRequirement.PROCEDURE;
     }
 
     /**
