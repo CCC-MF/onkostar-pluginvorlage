@@ -39,6 +39,26 @@ Angepasst wurden:
 * Projekt nutzt ausschließlich Maven und keine IDE-spezifischen Konfigurationen - kein spezieller Eclipse-Workspace erforderlich, Nutzung anderer IDE möglich.
 * Spring-Konfiguration `moduleContext.xml`: Zur verwendeten Version des Spring-Frameworks passende Schemata und Entfernen von ungenutzten Schemata.
 
+## Logging
+
+Die Beispiele zeigen Logging mit SLF4J. Eine Logger-Instanz kann folgendermaßen erstellt werden:
+
+```java
+class MeinTestplugin implements IProcedureAnalyzer {
+    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    // Beispiel zur Verwendung
+    public void demo() {
+        String logDetails = "Das sind weitere Details";
+        logger.info("Das ist ein Logeintrag: {}", logDetails);
+    }
+
+    // ... restlliche Implementierung
+}
+```
+
+Mehr zum Logging im Beitrag [Logging in Onkostar](https://confluence.it-choice.de/display/KBOSTARAPI/Logging+in+Onkostar).
+
 ## Beispiel mit Spring ComponentScan
 
 Onkostar verwendet das Spring Framework. Es ist dadurch möglich, einen ComponentScan auszuführen.
