@@ -59,14 +59,16 @@ class MeinTestplugin implements IProcedureAnalyzer {
 
 Mehr zum Logging im Beitrag [Logging in Onkostar](https://confluence.it-choice.de/display/KBOSTARAPI/Logging+in+Onkostar).
 
-## REST- oder andere Web-Anfragen in einem Plugin
+## REST- oder sonstige Web-Anfragen in einem Plugin
 
 Die Klasse `RestExamples` zeigt eine Anfrage an einen externen Dienst. Hier wird [**httpbin.org**](https://httpbin.org/) zum Darstellen einer Antwort verwendet.
 Es handelt sich hierbei um einen einfachen HTTP-Anfrage- und Antwort-Dienst.
 
 Dort wird [Anything](https://httpbin.org/#/Anything) als Beispielantwort verwendet. Hierbei werden neben anderen Werten auch die Query-Parameter der Anfrage zurück gegeben.
 
-Für die Verwendung der Klasse `RestTemplate` ist folgende Abhängigkeit in der Datei `pom.xml` eines eigenen Plugins einzufügen um die in Onkostar verwendeten Klassen für Webanfragen bekannt zu machen.
+Für die Verwendung der Klasse `RestTemplate` ist folgende Abhängigkeit in der Datei `pom.xml` eines eigenen Plugins einzufügen, um die in Onkostar verwendeten Klassen für Webanfragen bekannt zu machen.
+
+Mehr zu diesem Thema im Beitrag [REST- oder sonstige Web-Anfragen in einem Plugin](https://confluence.it-choice.de/display/KBOSTARAPI/REST-+oder+sonstige+Webanfragen+in+einem+Plugin)
 
 ```xml
 <dependency>
