@@ -5,7 +5,7 @@
 
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/beans/spring-context-4.3.xsd">
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
     <bean id="exampleProcedureAnalyzer" class="org.example.pluginvorlage.ExampleProcedureAnalyzer" />
     <bean id="exampleMethods" class="org.example.pluginvorlage.ExampleMethods" />
