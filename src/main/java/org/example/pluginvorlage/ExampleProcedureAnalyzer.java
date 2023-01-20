@@ -59,19 +59,25 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
 
     /**
      * This method implements a check if procedure or disease is relevant for running {@link #analyze(Procedure, Disease)}.
-     * In this example {@link Procedure} must be a non {@code null} object.
+     * In this example {@link Procedure} must be a non {@code null} object,
+     * {@link Disease} must be a non {@code null} object and procedure must
+     * have form name 'OS.Diagnose'.
      *
      * @param procedure The procedure the plugin might analyze. Can be {@code null}.
-     * @param disease   The disease thie plugin might analyze. Can be {@code null}.
+     * @param disease   The disease the plugin might analyze. Can be {@code null}.
      * @return True if plugin handles a procedure.
      */
     @Override
     public boolean isRelevantForAnalyzer(Procedure procedure, Disease disease) {
-        return null != procedure;
+        return null != procedure
+                && null != disease
+                && procedure.getFormName().equals("OS.Diagnose");
     }
 
     /**
      * This method gets executed each time requirements are met.
+     * In this example, a new form 'OS.Untersuchung' will be created each time a new
+     * diagnosis has been created.
      * <ul>
      *     <li>
      *         {@link #isRelevantForDeletedProcedure()} must return 'true'.
@@ -91,15 +97,23 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
     public void analyze(Procedure procedure, Disease disease) {
         logger.info("Run 'ExampleProcedureAnalyzer.analyze()'");
 
-        var patient = procedure.getPatient();
+        var newProcedure = new Procedure(onkostarApi);          // Create new procedure
+        newProcedure.setFormName("OS.Untersuchung");            // Set procedures form name
+        newProcedure.setPatientId(procedure.getPatientId());    // Set related patient ID
+        newProcedure.addDiseaseId(disease.getId());             // Add related disease ID
+        newProcedure.setStartDate(procedure.getStartDate());    // Set procedures date
+        newProcedure.setValue(                                  // Set form value(s)
+                "Untersuchungsdatum",
+                procedure.getValue("Diagnosedatum")
+        );
 
-        patient.getDiseases().forEach(patientDisease -> {
-            var icd10code = patientDisease.getIcd10Code();
-            // Example log! Do not use in production - personal information!
-            logger.info("Found Disease {} for Patient {}", icd10code, patient.getId());
-
-            // Do something with this data ...
-        });
+        // Try to save procedure. If any exception is thrown, throw new Runtime Exception
+        // to show error message popup in UI
+        try {
+            onkostarApi.saveProcedure(newProcedure, true);
+        } catch (Exception e) {
+            throw new RuntimeException("Prozedur 'OS.Untersuchung konnte nicht gespeichert werden.'");
+        }
     }
 
     @Override
@@ -114,7 +128,7 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
 
     /**
      * Returns set of trigger events.
-     * This example will limit execution of {@link #analyze(Procedure, Disease)} to save event after editing data.
+     * This example will limit execution of {@link #analyze(Procedure, Disease)} after creating a new procedure.
      * If not overridden, this method defaults to all {@link AnalyseTriggerEvent}s.
      *
      * @return Set of trigger events
@@ -122,7 +136,8 @@ public class ExampleProcedureAnalyzer implements IProcedureAnalyzer {
     @Override
     public Set<AnalyseTriggerEvent> getTriggerEvents() {
         return Set.of(
-                AnalyseTriggerEvent.EDIT_SAVE
+                AnalyseTriggerEvent.CREATE,
+                AnalyseTriggerEvent.CREATE_LOCK
         );
     }
 }
