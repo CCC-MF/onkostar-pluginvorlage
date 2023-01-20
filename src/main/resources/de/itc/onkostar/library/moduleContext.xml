@@ -10,7 +10,7 @@
     <bean id="exampleProcedureAnalyzer" class="org.example.pluginvorlage.ExampleProcedureAnalyzer" />
     <bean id="exampleMethods" class="org.example.pluginvorlage.ExampleMethods" />
 
-    <!-- Beispiel zur Übergabe einer referenz im Konstruktor -->
+    <!-- Beispiel zur Übergabe einer Referenz im Konstruktor -->
     <bean id="unitTestExamples" class="org.example.pluginvorlage.testexamples.UnitTestExamples" >
         <constructor-arg ref="localOnkostarApi" />
     </bean>
