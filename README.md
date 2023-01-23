@@ -79,6 +79,38 @@ Mehr zu diesem Thema im Beitrag [REST- oder sonstige Web-Anfragen in einem Plugi
 </dependency>
 ```
 
+## Statische Webressourcen
+
+Durch Konfiguration in der Datei `moduleContext.xml` ist es möglich, statische Webressourcen wie JavaScript-Dateien,
+aber auch Grafiken und andere Inhalte, in ein Plugin einzubinden.
+
+Folgendes Beispiel zeigt die Konfiguration für den Fall, dass alle Inhalte des Verzeichnisses [`src/main/resources/examples`](`src/main/resources/examples`)
+innerhalb des Webpfades `.../app/examples` abrufbar sind. Der Pfad ist dabei relativ zum Contextpfad von Onkostar, also in der Regel
+`/onkostar/app/examples`. Eine Datei `Examples.js` kann entsprechend über `/onkostar/app/examples/Example.js` abgerufen werden.
+
+```xml
+<mvc:resources mapping="/app/examples/**" location="classpath:/examples/" />
+```
+
+Dies ermöglicht, das Einbinden weiterer JavaScript-Funktionalität in Onkostar über ein Plugin.
+Hierzu muss in einem Formular zunächst das Script abgerufen werden und im Anschluss die zugehörige _ExtJS_-Klasse verwendet werden.
+
+```javascript
+// Laden über den Pfad der Datei (ohne '/onkostar'), mit Punkten anstelle '/' und ohne abschließendes '.js'.
+Ext.syncRequire('app.examples.Example', () => {
+    // Verweis auf die ExtJS-Klasse
+    let Example = Ext.ClassManager.get('Example');
+
+    // Wenn `Example === null`, dann Abbruch
+    if (Example === null) {
+        return;
+    }
+    
+    // Gibt "Hallo, Welt!" auf der Webkonsole aus.
+    Example.exampleFunc();
+});
+```
+
 ## Beispiel mit Spring ComponentScan
 
 Onkostar verwendet das Spring Framework. Es ist dadurch möglich, einen ComponentScan auszuführen.
