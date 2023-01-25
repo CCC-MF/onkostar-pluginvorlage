@@ -21,9 +21,6 @@ public class ExampleMethods implements IProcedureAnalyzer {
      */
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private IOnkostarApi onkostarApi;
-
     @Override
     public OnkostarPluginType getType() {
         return OnkostarPluginType.BACKEND_SERVICE;
