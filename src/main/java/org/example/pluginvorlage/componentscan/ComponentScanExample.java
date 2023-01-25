@@ -100,7 +100,12 @@ public class ComponentScanExample implements IProcedureAnalyzer {
      */
     @Override
     public void analyze(Procedure procedure, Disease disease) {
-        // Implement me ...
+        // ... do something with procedure ...
+        try {
+            onkostarApi.saveProcedure(procedure, true);
+        } catch (Exception e) {
+            throw new RuntimeException("Prozedur konnte nicht gespeichert werden.'");
+        }
     }
 
 }
