@@ -53,7 +53,7 @@ public class ComponentScanExample implements IProcedureAnalyzer {
 
     @Override
     public AnalyzerRequirement getRequirement() {
-        return AnalyzerRequirement.ENTRY;
+        return AnalyzerRequirement.PROCEDURE;
     }
 
     /**
