@@ -66,9 +66,7 @@ Es handelt sich hierbei um einen einfachen HTTP-Anfrage- und Antwort-Dienst.
 
 Dort wird [Anything](https://httpbin.org/#/Anything) als Beispielantwort verwendet. Hierbei werden neben anderen Werten auch die Query-Parameter der Anfrage zurück gegeben.
 
-Für die Verwendung der Klasse `RestTemplate` ist folgende Abhängigkeit in der Datei `pom.xml` eines eigenen Plugins einzufügen, um die in Onkostar verwendeten Klassen für Webanfragen bekannt zu machen.
-
-Mehr zu diesem Thema im Beitrag [REST- oder sonstige Web-Anfragen in einem Plugin](https://confluence.it-choice.de/display/KBOSTARAPI/REST-+oder+sonstige+Webanfragen+in+einem+Plugin)
+Für die Verwendung der Klasse `RestTemplate` ist folgende Abhängigkeit - hier passend für Version 2.11.1.x von Onkostar - in der Datei `pom.xml` eines eigenen Plugins einzufügen, um die in Onkostar verwendeten Klassen für Webanfragen bekannt zu machen.
 
 ```xml
 <dependency>
@@ -78,6 +76,8 @@ Mehr zu diesem Thema im Beitrag [REST- oder sonstige Web-Anfragen in einem Plugi
     <scope>provided</scope>
 </dependency>
 ```
+
+Mehr zu diesem Thema im Beitrag [REST- oder sonstige Web-Anfragen in einem Plugin](https://confluence.it-choice.de/display/KBOSTARAPI/REST-+oder+sonstige+Webanfragen+in+einem+Plugin)
 
 ## Statische Webressourcen
 
