@@ -28,6 +28,8 @@ Es sind zwei Klassen implementiert:
 * `ExampleProcedureAnalyser` zeigt eine Implementierung von `IProcedureAnalyzer`, welche nach jedem Speichern eines Formulars ausgeführt wird.
 * `ExampleMethods` zeigt eine Implementierung von `IProcedureAnalyzer`, mit einer Funktion zum Aufruf aus einem Script.
 
+Beachten Sie hierzu auch den Beitrag [Wie kann ich festlegen, ob und wann ein Plugin ausgeführt werden soll?](https://confluence.it-choice.de/pages/viewpage.action?pageId=127832868). 
+
 ## Abweichungen zum Beispielplugin
 
 Dieses Testplugin weicht vom Beispiel im [Kundenbereich ONKOSTAR Erweiterungen](https://confluence.it-choice.de/display/KBOSTARAPI/Entwicklungsumgebung) ab.
