@@ -1,0 +1,128 @@
+= Wie kann ich festlegen, ob und wann ein Plugin ausgeführt werden soll?
+
+Bei der Entwicklung von Plugins stellt sich die Frage, wie festgelegt werden kann, ob die Methode analyze() eines Plugins ausgeführt wird.
+Diese Methode enthält die Anweisungen, die bei Ausführung des Plugins auszuführen sind und dies soll nicht für jedes Plugin für jedes Formular geschehen.
+Onkostar bietet verschiedene Möglichkeiten, die Ausführung zu steuern.
+
+Neben grundlegenden Angaben, wie der Angabe, ob es sich um ein "Analyzer-Plugin" handelt und auf welche Arten von Änderungen das Plugin reagieren soll, können Sie auch direkt auf den Inhalt der Änderung Bezug nehmen und damit steuern, ob Ihr Plugin darauf reagieren soll.
+
+== Wie wird die Ausführung eines Plugins von Onkostar gesteuert?
+
+Onkostar verwendet intern das Spring-Framework und nutzt dessen Kernfeature "Dependency-Injection" zur Ausführung von Plugins. in jedem Plugin wird die Datei moduleContext.xml verwendet, um sogenannte Spring-Beans zu definieren, welche beim Start von Onkostar erstellt werden.
+Technisch gesehen wird in der Datei definiert, aus welcher Klasse beim Start von Onkostar ein Objekt erzeugt werden soll und unter welcher ID es bekannt gemacht wird.
+Beispielsweise wird durch folgende Zeile beim Start von Onkostar ein Objekt der Klasse org.example.pluginvorlage.ExamplePlugin erstellt und unter der ID examplePlugin in Onkostar bekannt gemacht.
+
+----
+<bean id="examplePlugin" class="org.example.pluginvorlage.ExamplePlugin" />
+----
+
+Jede Pluginklasse muss das Interface IProcedureAnalyzer implementieren, wodurch es Onkostar möglich ist, bei (Formular-)Änderungen alle Spring-Beans, welche das Interface IProcedureAnalyzer implementieren nacheinander aufzurufen und jeweils die in diesem Interface definierte Methoden aufzurufen.
+Anhand der Rückgabe werte dieser Methoden kann Onkostar entscheiden, ob für dieses Plugin die Methode analyze() ausgeführt werden soll, oder nicht.
+
+NOTE: Bitte verwenden Sie für Ihre Plugins immer Klassen, welche sich in einem Paket befinden.
+Dies ist nicht nur guter Java-Programmierstil, sondern auch erforderlich, damit dieser Mechanismus im Falle von Plugins des Typs `BACKEND_SERVICE` korrekt funktioniert.
+
+== Grundlegende Angaben im Plugin
+
+Zunächst sollten Sie in Ihrem Plugin angeben, dass es sich um ein Plugin vom Type "Analyzer" handelt.
+Verwenden Sie hierzu OnkostarPluginType.ANALYZER.
+Auch hier können Sie sogenannte "Backend-Methoden" zur Verwendung im Frontend implementieren, wie Sie es im Fall von OnkostarPluginType.BACKEND_SERVICE machen würden.
+
+----
+@Override public OnkostarPluginType getType() {
+  return OnkostarPluginType.ANALYZER;
+}
+----
+
+Geben Sie zudem an, ob sich das Plugin auf Prozeduren (= Formulare), Erkrankungen oder eine HL7-Nachricht bezieht.
+Dies geschieht durch Implementierung der Methode getRequirement().
+Hier sollte `AnalyzerRequirement.PROCEDURE` zurück gegeben werden, wenn Ihr Plugin auf eine Prozedur reagieren soll, `AnalyzerRequirement.DISEASE` für Erkrankungen oder `AnalyzerRequirement.HL7`, wenn auf eine HL7-Nachricht reagiert werden soll.
+
+----
+@Override public AnalyzerRequirement getRequirement() {
+  return AnalyzerRequirement.PROCEDURE;
+}
+----
+
+== Synchrone oder asynchrone Ausführung?
+
+Bei der Entwicklung von Plugins sollten Sie immer davon ausgehen, dass parallel andere Plugins ausgeführt werden könnten.
+Durch die Methode isSynchronous() können Sie angeben, ob Ihr Plugin mit anderen synchron auszuführenden Plugins in einer Art "Warteschlange" eingereiht wird und die Ausführung vorhergehender Plugins abgewartet wird, bevor Ihr Plugin und nachfolgende Plugins ausgeführt werden oder ob Ihr Plugin asynchron ausgeführt werden soll und damit parallel mit anderen Plugins die Ausführung in jeweils einem eigenen Thread angestoßen wird.
+Onkostar kann mehrere als asynchron auszuführende Plugins parallel ausführen und damit die Gesamtgeschwindigkeit der Ausführung (und auch Prüfung auf Relevanz) aller Plugins steigern.
+
+----
+@Override
+public boolean isSynchronous() {
+  return false;
+}
+----
+
+== Prüfen auf Relevanz
+
+Sie können in einem Plugin prüfen, ob die durchgeführte Aktion relevant für Ihr Plugin ist.
+Hierzu verwenden Sie die Methode `isRelevantForAnalyzer() um festzustellen, ob die Prozedur, damit ist das Formular gemeint, und/oder die zugehörige Diagnose relevant für die Ausführung des Plugins ist.
+Im unten stehenden Beispiel wird geprüft, ob ein relevantes Formular verwendet wurde und zudem eine Erkrankung zu dem Formular angegeben wurde.
+Im Beispiel soll nur auf das Formular "OS.Diagnose" reagiert werden, wenn diesem auch eine Erkrankung zugeordnet ist.
+
+----
+@Override public boolean isRelevantForAnalyzer(Procedure procedure, Disease disease) {
+  return null != procedure                            /* Eine Prozedur wurde übergeben */
+    && null != disease                                /* Auch eine Erkrankung wurde übergeben */
+    && procedure.getFormName().equals("OS.Diagnose"); /* Die Prozedur entspricht dem Formular "OS.Diagnose" */
+}
+----
+
+In dieser Methode können Sie auch weitere Prüfungen verwenden, die sich auf die Prozedur oder die Erkrankung beziehen.
+Es ist auch möglich, auf den Patienten zuzugreifen.
+Verwenden Sie dazu die Methode `procedure.getPatient()`.
+Damit können Sie weitere Prüfungen einbauen, die sich auf den Patienten beziehen.
+Ähnliches gilt für die Erkrankung.
+
+Sie können weiterhin angeben, ob das Plugin auch bei zu löschenden Prozeduren (= Formulare) ausgeführt werden soll.
+Im folgenden Beispiel soll das Plugin nicht bei zu löschenden Prozeduren ausgeführt werden.
+
+----
+@Override public boolean isRelevantForDeletedProcedure() {
+  return false;
+}
+----
+
+== Trigger Events
+
+Mit der Methode `getTriggerEvents() können Sie genau definieren, für welche Aktionen die Methode `analyze() ausgeführt werden soll.
+Im folgenden Beispiel soll das Plugin nur ausgeführt werden, wenn das relevante Formular angelegt wird.
+
+----
+@Override public Set<AnalyseTriggerEvent> getTriggerEvents() {
+  return Set.of( AnalyseTriggerEvent.CREATE, AnalyseTriggerEvent.CREATE_LOCK );
+}
+----
+
+Mögliche Werte sind:
+
+* CREATE
+* CREATE_LOCK
+* EDIT_SAVE
+* EDIT_LOCK
+* CHANGE_DISEASE
+* LOCK
+* UNLOCK
+* DELETE (* Bitte Hinweis zur Standardimplementierung beachten)
+* IMPORT
+* PATIENT_EDIT
+* REORG
+
+[NOTE]
+====
+Die Methode `getTriggerEvents()` hat eine Standardimplementierung.
+Sie muss daher nicht zwangsweise in Ihrem Plugin implementiert werden und wird auch nicht automatisch von IDEs generiert, wenn Sie ein Plugin anlegen, welche das Interface `IProceduryAnalyzer` implementieren soll.
+
+Die Standardimplementierung in der OnkostarAPI erlaubt grundsätzlich alle Trigger Events mit Ausnahme von `DELETE`, welches nur erlaubt wird, wenn Ihre Implementierung der Methode `isRelevantForDeletedProcedure()` den Wert `true` zurück gibt.
+
+Durch eine eigene Implementierung von `getTriggerEvents()` können Sie dieses Verhalten selbst steuern und genau festlegen, nach welcher Aktion Ihr Plugin ausgeführt werden soll.
+====
+
+
+
+
+
