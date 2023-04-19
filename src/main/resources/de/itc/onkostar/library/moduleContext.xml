@@ -24,12 +24,12 @@
 
     <!-- Beispiel REST-Endpunkt -->
     <context:component-scan base-package="org.example.pluginvorlage.restendpoint" />
-
     <security:http pattern="/restendpoint/**">
         <security:csrf disabled="true" />
         <security:http-basic />
         <security:intercept-url pattern="/**" access="isAuthenticated()" />
     </security:http>
+    <!-- Ende Beispiel REST-Endpunkt -->
 
     <!-- Beispiel für statische Webinhalte, die innerhalb von Onkostar abgerufen werden können. -->
     <mvc:resources mapping="/app/examples/**" location="classpath:/examples/" />

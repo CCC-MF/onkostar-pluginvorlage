@@ -52,4 +52,8 @@ Eine kurze Einführung dazu gibt es auch hier: https://spring.io/guides/gs/rest-
 Das zugehörige Beispiel in der Klasse `DemoRestController` zeigt eine Methode, die z.B. auf eine Anfrage an `http://localhost:8080/onkostar/restendpoint/procedures/1234/formname` reagiert, die Prozedur lädt und, wenn eine prozedur mit ID 1234 existiert,
 den Formularnamen der Prozedur zurückgibt.
 
+Weiterhin wurde eine kleine Webseite hinzugefügt, die genau diesen REST-Endpunkt verwendet und ist, je nach Installation von Onkostar, hier zu finden:  http://localhost:8080/onkostar/app/examples/demo.html.
+
+Da der Benutzer an dieser Stelle bereits über das Login-Formular angemeldet ist, ist für den REST-Endpunkt keine weitere Angabe von Benutzername und Passwort erforderlich.
+
 
