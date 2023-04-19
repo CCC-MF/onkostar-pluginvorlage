@@ -3,6 +3,7 @@ package org.example.pluginvorlage.restendpoint;
 import de.itc.onkostar.api.IOnkostarApi;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,8 +22,8 @@ public class DemoRestController {
      * @param id The requested procedure ID
      * @return HTTP 200 - OK with body containing related form name or HTTP 404 - NOT_FOUND if no such procedure exists.
      */
-    @GetMapping("/procedures/{}/formname")
-    public ResponseEntity<String> getFormname(int id) {
+    @GetMapping("/procedures/{id}/formname")
+    public ResponseEntity<String> getFormname(@PathVariable int id) {
         var form = this.onkostarApi.getProcedure(id);
 
         if (null == form) {
