@@ -85,6 +85,20 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Benötigt für Beispiel "restendpoint" -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>4.2.2.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>4.2.2.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Onkostar API -->
         <dependency>
             <groupId>de.itc</groupId>
